@@ -44,7 +44,7 @@ app.delete('/videos/:videoId', (req: Request, res: Response) => {
         res.sendStatus(404)
     } else {
         videosData.splice(index, 1)
-        res.sendStatus(404)
+        res.sendStatus(204)
     }
 })
 
