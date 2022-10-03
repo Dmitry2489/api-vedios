@@ -22,6 +22,17 @@ app.get('/videos', (req: Request, res: Response) => {
     res.send(videosData)
 })
 
+app.get('/videos/:videoId', (req: Request, res: Response) => {
+    const id = +req.params.videoId
+
+    const video = videosData.find(v => v.id === id)
+
+    if(!video) {
+       res.sendStatus(404)
+    }
+})
+
+
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
