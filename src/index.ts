@@ -34,6 +34,19 @@ app.get('/videos/:videoId', (req: Request, res: Response) => {
     res.status(201).send(video)
 })
 
+app.delete('/videos/:videoId', (req: Request, res: Response) => {
+    const id = +req.params.videoId
+
+    const index = videosData.findIndex(v => v.id === id)
+
+
+    if(index === -1) {
+        res.sendStatus(404)
+    } else {
+        videosData.splice(index, 1)
+        res.sendStatus(404)
+    }
+})
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
