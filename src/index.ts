@@ -30,6 +30,8 @@ app.get('/videos/:videoId', (req: Request, res: Response) => {
     if(!video) {
        res.sendStatus(404)
     }
+
+    res.status(201).send(video)
 })
 
 
