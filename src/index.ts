@@ -18,11 +18,11 @@ const videosData = [
     }
 ];
 
-app.get('/videos', (req: Request, res: Response) => {
+app.get('/', (req: Request, res: Response) => {
     res.send(videosData);
 });
 
-app.post('/videos', (req, res) => {
+app.post('/videos', (req: Request, res: Response) => {
     const titleVideo = req.body.title;
     const authorVideo = req.body.author;
     const availableResolutions = req.body.availableResolutions;
