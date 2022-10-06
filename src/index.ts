@@ -23,6 +23,7 @@ app.get('/videos', (req: Request, res: Response) => {
 });
 
 app.post('/videos', (req: Request, res: Response) => {
+    console.log(req)
     const titleVideo = req.body.title;
     const authorVideo = req.body.author;
     const availableResolutions = req.body.availableResolutions;
