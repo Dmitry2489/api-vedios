@@ -18,7 +18,7 @@ const videosData = [
     }
 ];
 
-app.get('/', (req: Request, res: Response) => {
+app.get('/videos', (req: Request, res: Response) => {
     res.send(videosData);
 });
 
