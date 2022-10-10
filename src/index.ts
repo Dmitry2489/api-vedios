@@ -1,7 +1,11 @@
 import express, {Request, Response} from 'express'
+import bodyParser from "body-parser";
 
 const app = express()
 const port = process.env.PORT || 5000
+
+const parserMiddleware = bodyParser({})
+app.use(parserMiddleware)
 
 const videosData = [
     {
@@ -43,6 +47,7 @@ app.post('/videos', (req: Request, res: Response) => {
         });
         return;
     }
+
 
     const newVideo = {
         id: +(new Date()),
