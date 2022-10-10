@@ -18,13 +18,17 @@ const videosData = [
     }
 ];
 
+app.get('/', (req: Request, res: Response) => {
+    res.send('Hello World!!! Dima')
+})
+
 app.get('/videos', (req: Request, res: Response) => {
     res.send(videosData);
 });
 
 app.post('/videos', (req: Request, res: Response) => {
-    console.log(req)
-    const titleVideo = req.body.title;
+    console.log(req.body.title)
+    const titleVideo = req.body.title
     const authorVideo = req.body.author;
     const availableResolutions = req.body.availableResolutions;
 
@@ -52,7 +56,7 @@ app.post('/videos', (req: Request, res: Response) => {
     };
 
     videosData.push(newVideo);
-    return newVideo;
+    res.status(201).send(newVideo);
 });
 
 app.get('/videos/:videoId', (req, res) => {
