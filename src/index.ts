@@ -48,6 +48,18 @@ app.post('/videos', (req: Request, res: Response) => {
         return;
     }
 
+    if (req.body.title.length > 40 ) {
+        res.status(400).json({
+            "errorsMessages": [
+                {
+                    "message": "Title is required",
+                    "field": "title"
+                }
+            ],
+        });
+        return;
+    }
+
 
     const newVideo = {
         id: +(new Date()),
@@ -55,7 +67,7 @@ app.post('/videos', (req: Request, res: Response) => {
         author: authorVideo,
         canBeDownloaded: true,
         minAgeRestriction: null,
-        createdAt: String(new Date()),
+        createdAt: new Date().toISOString(),
         publicationDate: new Date().toISOString(),
         availableResolutions: availableResolutions
     };
