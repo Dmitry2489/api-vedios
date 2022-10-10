@@ -52,7 +52,31 @@ app.post('/videos', (req: Request, res: Response) => {
         res.status(400).json({
             "errorsMessages": [
                 {
-                    "message": "Title is required",
+                    "message": "Title should is maximum length 40 characters",
+                    "field": "title"
+                }
+            ],
+        });
+        return;
+    }
+
+    if (!req.body.author) {
+        res.status(400).json({
+            "errorsMessages": [
+                {
+                    "message": "Author is required",
+                    "field": "title"
+                }
+            ],
+        });
+        return;
+    }
+
+    if (req.body.author.length > 20 ) {
+        res.status(400).json({
+            "errorsMessages": [
+                {
+                    "message": "Author should is maximum length 40 characters",
                     "field": "title"
                 }
             ],
