@@ -7,7 +7,18 @@ const port = process.env.PORT || 5000
 const parserMiddleware = bodyParser({})
 app.use(parserMiddleware)
 
-const videosData = [
+interface VideosDataType {
+    id: number;
+    title: string;
+    author: string;
+    canBeDownloaded: boolean
+    minAgeRestriction: any;
+    createdAt: string;
+    publicationDate: string;
+    availableResolutions: Array<string>;
+}
+
+let videosData: VideosDataType[]  = [
     {
         id: 0,
         title: "string",
@@ -111,6 +122,19 @@ app.get('/videos/:videoId', (req, res) => {
 
     res.status(201).send(video);
 });
+
+app.put('/videos/:videoId', (req, res) => {
+    const id = +req.params.videoId;
+    const video = videosData.find(v => v.id === id);
+
+    if (!video) {
+        res.sendStatus(404);
+        return;
+    }
+
+    res.status(201).send(video);
+});
+
 app.delete('/videos/:videoId', (req, res) => {
     const id = +req.params.videoId;
     const index = videosData.findIndex(v => v.id === id);
@@ -126,9 +150,9 @@ app.delete('/videos/:videoId', (req, res) => {
 });
 
 app.delete('/testing/all-data', (req, res) => {
-    const index = videosData.splice(0, -1);
+     videosData = videosData.splice(0, -1);
 
-    if (index.length === 0) {
+    if (videosData.length === 0) {
         res.sendStatus(204);
         return;
     }
