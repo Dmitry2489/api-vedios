@@ -18,7 +18,7 @@ interface VideosDataType {
     availableResolutions: Array<string>;
 }
 
-let videosData: VideosDataType[]  = [
+let videosData: VideosDataType[] = [
     {
         id: 0,
         title: "string",
@@ -59,7 +59,7 @@ app.post('/videos', (req: Request, res: Response) => {
         return;
     }
 
-    if (req.body.title.length > 40 ) {
+    if (req.body.title.length > 40) {
         res.status(400).json({
             "errorsMessages": [
                 {
@@ -83,7 +83,7 @@ app.post('/videos', (req: Request, res: Response) => {
         return;
     }
 
-    if (req.body.author.length > 20 ) {
+    if (req.body.author.length > 20) {
         res.status(400).json({
             "errorsMessages": [
                 {
@@ -125,14 +125,85 @@ app.get('/videos/:videoId', (req, res) => {
 
 app.put('/videos/:videoId', (req, res) => {
     const id = +req.params.videoId;
-    const video = videosData.find(v => v.id === id);
+    const titleVideo = req.body.title
+    const authorVideo = req.body.author;
+    const availableResolutionsVideo = req.body.availableResolutions;
+    const canBeDownloadedVideo = req.body.canBeDownloaded;
+    const minAgeRestrictionVideo = req.body.minAgeRestriction;
+    const publicationDateVideo = req.body.publicationDate;
 
-    if (!video) {
-        res.sendStatus(404);
+    if (!req.body.title) {
+        res.status(400).json({
+            "errorsMessages": [
+                {
+                    "message": "Title is required",
+                    "field": "title"
+                }
+            ],
+        });
         return;
     }
 
-    res.status(201).send(video);
+    if (req.body.title.length > 40) {
+        res.status(400).json({
+            "errorsMessages": [
+                {
+                    "message": "Title should is maximum length 40 characters",
+                    "field": "title"
+                }
+            ],
+        });
+        return;
+    }
+
+    if (!req.body.author) {
+        res.status(400).json({
+            "errorsMessages": [
+                {
+                    "message": "Author is required",
+                    "field": "title"
+                }
+            ],
+        });
+        return;
+    }
+
+    if (req.body.author.length > 20) {
+        res.status(400).json({
+            "errorsMessages": [
+                {
+                    "message": "Author should is maximum length 40 characters",
+                    "field": "title"
+                }
+            ],
+        });
+        return;
+    }
+
+
+    const findVideo = videosData.find(v => v.id === id);
+
+    if (!findVideo) {
+            res.sendStatus(404);
+            return;
+    } else {
+        findVideo.title = titleVideo;
+        findVideo.author = authorVideo;
+        findVideo.minAgeRestriction = availableResolutionsVideo;
+        findVideo.canBeDownloaded = canBeDownloadedVideo;
+        findVideo.minAgeRestriction = minAgeRestrictionVideo;
+        findVideo.publicationDate = publicationDateVideo;
+
+        res.status(204).send(findVideo);
+        return;
+    }
+
+    // if (!video) {
+    //     res.sendStatus(404);
+    //     return;
+    // }
+    //
+    // res.status(204).send(video);
 });
 
 app.delete('/videos/:videoId', (req, res) => {
@@ -150,7 +221,7 @@ app.delete('/videos/:videoId', (req, res) => {
 });
 
 app.delete('/testing/all-data', (req, res) => {
-     videosData = videosData.splice(0, -1);
+    videosData = videosData.splice(0, -1);
 
     if (videosData.length === 0) {
         res.sendStatus(204);
