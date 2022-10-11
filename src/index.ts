@@ -1,6 +1,8 @@
 import express, {Request, Response} from 'express'
 import bodyParser from "body-parser";
 
+import { addDays } from 'date-fns'
+
 const app = express()
 const port = process.env.PORT || 5000
 
@@ -94,16 +96,20 @@ app.post('/videos', (req: Request, res: Response) => {
         });
         return;
     }
-
+    //2022-10-12T18:42:54.655Z
+    const dateNow = new Date()
+    // +new Date() = 123123213
+    // const datePlusDay = new Date(+dateNow + (1000 * 60 * 60 * 24))
+    const datePlusDay = addDays(dateNow, 1)
 
     const newVideo = {
-        id: +(new Date()),
+        id: +dateNow,
         title: titleVideo,
         author: authorVideo,
-        canBeDownloaded: true,
+        canBeDownloaded: false,
         minAgeRestriction: null,
-        createdAt: new Date().toISOString(),
-        publicationDate: new Date().toISOString(),
+        createdAt: dateNow.toISOString(),
+        publicationDate: datePlusDay.toISOString(),
         availableResolutions: availableResolutions
     };
 
