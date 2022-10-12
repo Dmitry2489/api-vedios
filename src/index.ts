@@ -1,23 +1,29 @@
 import express, {Request, Response} from 'express'
-import bodyParser from "body-parser";
+// import bodyParser from "body-parser";
 
 import { addDays } from 'date-fns'
 
 const app = express()
 const port = process.env.PORT || 5000
 
-const parserMiddleware = bodyParser({})
+// const parserMiddleware = bodyParser({})
+const parserMiddleware = express.json({})
 app.use(parserMiddleware)
 
 interface VideosDataType {
     id: number;
     title: string;
     author: string;
-    canBeDownloaded: boolean
-    minAgeRestriction: any;
+    canBeDownloaded: boolean,
+    minAgeRestriction: number | null;
     createdAt: string;
     publicationDate: string;
     availableResolutions: Array<string>;
+}
+
+type errorsType = {
+    message:string,
+    field: string
 }
 
 let videosData: VideosDataType[] = [
@@ -47,55 +53,54 @@ app.post('/videos', (req: Request, res: Response) => {
     console.log(req.body.title)
     const titleVideo = req.body.title
     const authorVideo = req.body.author;
-    const availableResolutions = req.body.availableResolutions;
+    const availableResolutions = req.body.availableResolutions
+    let errors: Array<errorsType> = []
 
     if (!req.body.title) {
-        res.status(400).json({
-            "errorsMessages": [
-                {
-                    "message": "Title is required",
-                    "field": "title"
-                }
-            ],
-        });
-        return;
+        errors.push(
+            {
+                "message": "Title is required",
+                "field": "title"
+            }
+        )
     }
 
     if (req.body.title.length > 40) {
-        res.status(400).json({
-            "errorsMessages": [
-                {
-                    "message": "Title should is maximum length 40 characters",
-                    "field": "title"
-                }
-            ],
-        });
-        return;
+        errors.push(
+            {
+                "message": "Title should is maximum length 40 characters",
+                "field": "title"
+            }
+        )
     }
 
     if (!req.body.author) {
-        res.status(400).json({
-            "errorsMessages": [
-                {
-                    "message": "Author is required",
-                    "field": "title"
-                }
-            ],
-        });
-        return;
+        errors.push(
+            {
+                "message": "Author is required",
+                "field": "title"
+            }
+        )
     }
 
     if (req.body.author.length > 20) {
-        res.status(400).json({
-            "errorsMessages": [
-                {
-                    "message": "Author should is maximum length 40 characters",
-                    "field": "title"
-                }
-            ],
-        });
+        errors.push(
+            {
+                "message": "Author should is maximum length 40 characters",
+                "field": "title"
+            }
+        )
+    }
+
+    if (errors.length >= 1) {
+        res.status(400).json(
+            {
+                "errorsMessages": errors
+            }
+        )
         return;
     }
+
     //2022-10-12T18:42:54.655Z
     const dateNow = new Date()
     // +new Date() = 123123213
@@ -117,7 +122,7 @@ app.post('/videos', (req: Request, res: Response) => {
     res.status(201).send(newVideo);
 });
 
-app.get('/videos/:videoId', (req, res) => {
+app.get('/videos/:videoId', (req: Request, res) => {
     const id = +req.params.videoId;
     const video = videosData.find(v => v.id === id);
 
@@ -126,7 +131,7 @@ app.get('/videos/:videoId', (req, res) => {
         return;
     }
 
-    res.status(201).send(video);
+    res.status(200).send(video);
 });
 
 app.put('/videos/:videoId', (req, res) => {
@@ -234,6 +239,7 @@ app.delete('/testing/all-data', (req, res) => {
         return;
     }
 });
+
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
