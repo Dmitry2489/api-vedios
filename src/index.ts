@@ -62,8 +62,8 @@ app.post('/videos', (req: Request, res: Response) => {
     if (!titleVideo || titleVideo === null) {
         errors.push(
             {
-                "message": "Title is required",
-                "field": "title"
+                message: "Title is required",
+                field: "title"
             }
         )
     }
@@ -71,8 +71,8 @@ app.post('/videos', (req: Request, res: Response) => {
     if (titleVideo != null && titleVideo.length > 40) {
         errors.push(
             {
-                "message": "Title should is maximum length 40 characters",
-                "field": "title"
+                message: "Title should is maximum length 40 characters",
+                field: "title"
             }
         )
     }
@@ -80,8 +80,8 @@ app.post('/videos', (req: Request, res: Response) => {
     if (!authorVideo || authorVideo === null) {
         errors.push(
             {
-                "message": "Author is required",
-                "field": "author "
+                message: "Author is required",
+                field: "author "
             }
         )
     }
@@ -89,8 +89,8 @@ app.post('/videos', (req: Request, res: Response) => {
     if (authorVideo != null && authorVideo.length > 20) {
         errors.push(
             {
-                "message": "Author should is maximum length 20 characters",
-                "field": "author "
+                message: "Author should is maximum length 20 characters",
+                field: "author "
             }
         )
     }
@@ -100,8 +100,8 @@ app.post('/videos', (req: Request, res: Response) => {
     if (!Array.isArray(availableResolutions)) {
         errors.push(
             {
-                "message": "Available Resolutions not valid ",
-                "field": "availableResolutions"
+                message: "Available Resolutions not valid ",
+                field: "availableResolutions"
             }
         )
     }
@@ -109,8 +109,8 @@ app.post('/videos', (req: Request, res: Response) => {
     if (availableResolutions.length > 8) {
         errors.push(
             {
-                "message": "Available Resolutions should is maximum length 8 ",
-                "field": "availableResolutions"
+                message: "Available Resolutions should is maximum length 8 ",
+                field: "availableResolutions"
             }
         )
     }
@@ -185,8 +185,8 @@ app.put('/videos/:videoId', (req, res) => {
     if (!titleVideo || titleVideo === null) {
         errors.push(
             {
-                "message": "Title is required",
-                "field": "title"
+                message: "Title is required",
+                field: "title"
             }
         )
     }
@@ -194,8 +194,8 @@ app.put('/videos/:videoId', (req, res) => {
     if (titleVideo != null && titleVideo.length > 40) {
         errors.push(
             {
-                "message": "Title should is maximum length 40 characters",
-                "field": "title"
+                message: "Title should is maximum length 40 characters",
+                field: "title"
             }
         )
     }
@@ -203,8 +203,8 @@ app.put('/videos/:videoId', (req, res) => {
     if (!authorVideo || titleVideo === null) {
         errors.push(
             {
-                "message": "Author is required",
-                "field": "title"
+                message: "Author is required",
+                field: "title"
             }
         )
     }
@@ -212,8 +212,8 @@ app.put('/videos/:videoId', (req, res) => {
     if (authorVideo != null && authorVideo.length > 20) {
         errors.push(
             {
-                "message": "Author should is maximum length 40 characters",
-                "field": "title"
+                message: "Author should is maximum length 40 characters",
+                field: "title"
             }
         )
     }
@@ -225,8 +225,8 @@ app.put('/videos/:videoId', (req, res) => {
     if (!minAgeRestrictionVideoRes) {
         errors.push(
             {
-                "message": "AgeRestrictionVideo should is minimum 1 and maximum 18",
-                "field": "title"
+                message: "AgeRestrictionVideo should is minimum 1 and maximum 18",
+                field: "title"
             }
         )
     }
@@ -234,8 +234,8 @@ app.put('/videos/:videoId', (req, res) => {
     if (!Array.isArray(availableResolutionsVideo)) {
         errors.push(
             {
-                "message": "Available Resolutions not valid ",
-                "field": "availableResolutions"
+                message: "Available Resolutions not valid ",
+                field: "availableResolutions"
             }
         )
     }
@@ -258,8 +258,8 @@ app.put('/videos/:videoId', (req, res) => {
     if (!isBoolean(canBeDownloadedVideo)) {
         errors.push(
             {
-                "message": "Available Resolutions not boolean type ",
-                "field": "canBeDownloaded"
+                message: "Available Resolutions not boolean type ",
+                field: "canBeDownloaded"
             }
         )
     }
