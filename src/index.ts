@@ -81,7 +81,7 @@ app.post('/videos', (req: Request, res: Response) => {
         errors.push(
             {
                 "message": "Author is required",
-                "field": "Author "
+                "field": "author "
             }
         )
     }
