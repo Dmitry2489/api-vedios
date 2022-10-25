@@ -41,6 +41,8 @@ let videosData: VideosDataType[] = [
     }
 ];
 
+const resolutionValid = [ 'P144', 'P240', 'P360', 'P480', 'P720', 'P1080', 'P1440', 'P2160' ]
+
 app.get('/', (req: Request, res: Response) => {
     res.send('Hello World!!! Dima')
 })
@@ -56,7 +58,9 @@ app.post('/videos', (req: Request, res: Response) => {
     const availableResolutions = req.body.availableResolutions
     let errors: Array<errorsType> = []
 
-    if (!req.body.title) {
+    console.log(availableResolutions)
+
+    if (!titleVideo) {
         errors.push(
             {
                 "message": "Title is required",
@@ -65,7 +69,7 @@ app.post('/videos', (req: Request, res: Response) => {
         )
     }
 
-    if (req.body.title.length > 40) {
+    if (titleVideo.length > 40) {
         errors.push(
             {
                 "message": "Title should is maximum length 40 characters",
@@ -74,23 +78,55 @@ app.post('/videos', (req: Request, res: Response) => {
         )
     }
 
-    if (!req.body.author) {
+    if (!authorVideo) {
         errors.push(
             {
                 "message": "Author is required",
-                "field": "title"
+                "field": "Author "
             }
         )
     }
 
-    if (req.body.author.length > 20) {
+    if (authorVideo.length > 20) {
         errors.push(
             {
-                "message": "Author should is maximum length 40 characters",
-                "field": "title"
+                "message": "Author should is maximum length 20 characters",
+                "field": "Author "
             }
         )
     }
+
+    // availableResolutions instanceof  Array
+    if(!Array.isArray(availableResolutions)) {
+        errors.push(
+            {
+                "message": "Available Resolutions not valid ",
+                "field": "availableResolutions"
+            }
+        )
+    }
+
+    if(availableResolutions.length > 8) {
+        errors.push(
+            {
+                "message": "Available Resolutions should is maximum length 8 ",
+                "field": "availableResolutions"
+            }
+        )
+    }
+
+    let availableResolutionExamination: Array<string>  = [];
+
+    availableResolutions.map((av: string) => {
+        resolutionValid.map(rv => {
+           if (rv === av) {
+               console.log(av)
+               availableResolutionExamination.push(av)
+           }
+        })
+    })
+
+    console.log(availableResolutionExamination)
 
     if (errors.length >= 1) {
         res.status(400).json(
@@ -115,7 +151,7 @@ app.post('/videos', (req: Request, res: Response) => {
         minAgeRestriction: null,
         createdAt: dateNow.toISOString(),
         publicationDate: datePlusDay.toISOString(),
-        availableResolutions: availableResolutions
+        availableResolutions: availableResolutionExamination
     };
 
     videosData.push(newVideo);
