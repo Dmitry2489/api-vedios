@@ -81,7 +81,7 @@ app.post('/videos', (req: Request, res: Response) => {
         errors.push(
             {
                 message: "Author is required",
-                field: "author "
+                field: "author"
             }
         )
     }
@@ -90,7 +90,7 @@ app.post('/videos', (req: Request, res: Response) => {
         errors.push(
             {
                 message: "Author should is maximum length 20 characters",
-                field: "author "
+                field: "author"
             }
         )
     }
