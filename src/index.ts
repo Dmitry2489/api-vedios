@@ -212,7 +212,7 @@ app.put('/videos/:videoId', (req, res) => {
         errors.push(
             {
                 message: "Author is required",
-                field: "title"
+                field: "author"
             }
         )
     }
@@ -221,7 +221,7 @@ app.put('/videos/:videoId', (req, res) => {
         errors.push(
             {
                 message: "Author should is maximum length 40 characters",
-                field: "title"
+                field: "author"
             }
         )
     }
@@ -234,7 +234,7 @@ app.put('/videos/:videoId', (req, res) => {
         errors.push(
             {
                 message: "AgeRestrictionVideo should is minimum 1 and maximum 18",
-                field: "title"
+                field: "AgeRestrictionVideo"
             }
         )
     }
