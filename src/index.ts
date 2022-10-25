@@ -15,7 +15,7 @@ interface VideosDataType {
     title: string;
     author: string;
     canBeDownloaded: boolean,
-    minAgeRestriction: number | null;
+    minAgeRestriction: number | null | boolean;
     createdAt: string;
     publicationDate: string;
     availableResolutions: Array<string>;
@@ -126,8 +126,6 @@ app.post('/videos', (req: Request, res: Response) => {
         })
     })
 
-    console.log(availableResolutionExamination)
-
     if (errors.length >= 1) {
         res.status(400).json(
             {
@@ -176,54 +174,103 @@ app.put('/videos/:videoId', (req, res) => {
     const authorVideo = req.body.author;
     const availableResolutionsVideo = req.body.availableResolutions;
     const canBeDownloadedVideo = req.body.canBeDownloaded;
-    const minAgeRestrictionVideo = req.body.minAgeRestriction;
+    const minAgeRestrictionVideo = +req.body.minAgeRestriction;
+    let minAgeRestrictionVideoRes = false;
     const publicationDateVideo = req.body.publicationDate;
+    let errors: Array<errorsType> = []
+    const dateNow = new Date()
 
-    if (!req.body.title) {
-        res.status(400).json({
-            "errorsMessages": [
-                {
-                    "message": "Title is required",
-                    "field": "title"
-                }
-            ],
-        });
-        return;
+    const datePlusDay = addDays(dateNow, 1)
+
+    if (!titleVideo || titleVideo === null) {
+        errors.push(
+            {
+                "message": "Title is required",
+                "field": "title"
+            }
+        )
     }
 
-    if (req.body.title.length > 40) {
-        res.status(400).json({
-            "errorsMessages": [
-                {
-                    "message": "Title should is maximum length 40 characters",
-                    "field": "title"
-                }
-            ],
-        });
-        return;
+    if (titleVideo != null && titleVideo.length > 40) {
+        errors.push(
+            {
+                "message": "Title should is maximum length 40 characters",
+                "field": "title"
+            }
+        )
     }
 
-    if (!req.body.author) {
-        res.status(400).json({
-            "errorsMessages": [
-                {
-                    "message": "Author is required",
-                    "field": "title"
-                }
-            ],
-        });
-        return;
+    if (!authorVideo || titleVideo === null) {
+        errors.push(
+            {
+                "message": "Author is required",
+                "field": "title"
+            }
+        )
     }
 
-    if (req.body.author.length > 20) {
-        res.status(400).json({
-            "errorsMessages": [
-                {
-                    "message": "Author should is maximum length 40 characters",
-                    "field": "title"
-                }
-            ],
-        });
+    if (authorVideo != null && authorVideo.length > 20) {
+        errors.push(
+            {
+                "message": "Author should is maximum length 40 characters",
+                "field": "title"
+            }
+        )
+    }
+
+    if (minAgeRestrictionVideo <= 18 && minAgeRestrictionVideo != 0) {
+        minAgeRestrictionVideoRes = true
+    }
+
+    if (!minAgeRestrictionVideoRes) {
+        errors.push(
+            {
+                "message": "AgeRestrictionVideo should is minimum 1 and maximum 18",
+                "field": "title"
+            }
+        )
+    }
+
+    if (!Array.isArray(availableResolutionsVideo)) {
+        errors.push(
+            {
+                "message": "Available Resolutions not valid ",
+                "field": "availableResolutions"
+            }
+        )
+    }
+
+    let availableResolutionExamination: Array<string> = [];
+
+    availableResolutionsVideo.map((av: string) => {
+        resolutionValid.map(rv => {
+            if (rv === av) {
+                console.log(av)
+                availableResolutionExamination.push(av)
+            }
+        })
+    })
+
+    const isBoolean = (val: any) => {
+        return val === false || val === true;
+    }
+
+    if (!isBoolean(canBeDownloadedVideo)) {
+        errors.push(
+            {
+                "message": "Available Resolutions not boolean type ",
+                "field": "canBeDownloaded"
+            }
+        )
+    }
+
+
+    if (errors.length >= 1) {
+        res.status(400).json(
+            {
+                "errorsMessages": errors
+            }
+        )
         return;
     }
 
@@ -236,10 +283,10 @@ app.put('/videos/:videoId', (req, res) => {
     } else {
         findVideo.title = titleVideo;
         findVideo.author = authorVideo;
-        findVideo.minAgeRestriction = availableResolutionsVideo;
+        findVideo.minAgeRestriction = minAgeRestrictionVideoRes;
         findVideo.canBeDownloaded = canBeDownloadedVideo;
         findVideo.minAgeRestriction = minAgeRestrictionVideo;
-        findVideo.publicationDate = publicationDateVideo;
+        findVideo.publicationDate = datePlusDay.toISOString();
 
         res.status(204).send(findVideo);
         return;
