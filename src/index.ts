@@ -266,7 +266,7 @@ app.put('/videos/:videoId', (req, res) => {
     if (!isBoolean(canBeDownloadedVideo)) {
         errors.push(
             {
-                message: "Available Resolutions not boolean type ",
+                message: "canBeDownloaded not boolean type ",
                 field: "canBeDownloaded"
             }
         )
