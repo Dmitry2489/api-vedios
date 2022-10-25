@@ -124,7 +124,7 @@ app.post('/videos', (req: Request, res: Response) => {
         })
     })
 
-    if (availableResolutionExamination.length != availableResolutions.lenght) {
+    if (availableResolutionExamination.length != availableResolutions.length) {
         errors.push(
             {
                 message: "Available Resolutions not valid ",
@@ -242,7 +242,7 @@ app.put('/videos/:videoId', (req, res) => {
     if (!Array.isArray(availableResolutionsVideo)) {
         errors.push(
             {
-                message: "Available Resolutions not valid ",
+                message: "Available Resolutions not valid",
                 field: "availableResolutions"
             }
         )
