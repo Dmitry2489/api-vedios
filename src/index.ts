@@ -1,7 +1,7 @@
 import express, {Request, Response} from 'express'
 // import bodyParser from "body-parser";
 
-import { addDays } from 'date-fns'
+import {addDays} from 'date-fns'
 
 const app = express()
 const port = process.env.PORT || 5000
@@ -22,7 +22,7 @@ interface VideosDataType {
 }
 
 type errorsType = {
-    message:string,
+    message: string,
     field: string
 }
 
@@ -41,7 +41,7 @@ let videosData: VideosDataType[] = [
     }
 ];
 
-const resolutionValid = [ 'P144', 'P240', 'P360', 'P480', 'P720', 'P1080', 'P1440', 'P2160' ]
+const resolutionValid = ['P144', 'P240', 'P360', 'P480', 'P720', 'P1080', 'P1440', 'P2160']
 
 app.get('/', (req: Request, res: Response) => {
     res.send('Hello World!!! Dima')
@@ -58,9 +58,8 @@ app.post('/videos', (req: Request, res: Response) => {
     const availableResolutions = req.body.availableResolutions
     let errors: Array<errorsType> = []
 
-    console.log(availableResolutions)
 
-    if (!titleVideo) {
+    if (!titleVideo || titleVideo === null) {
         errors.push(
             {
                 "message": "Title is required",
@@ -69,7 +68,7 @@ app.post('/videos', (req: Request, res: Response) => {
         )
     }
 
-    if (titleVideo.length > 40) {
+    if (titleVideo != null && titleVideo.length > 40) {
         errors.push(
             {
                 "message": "Title should is maximum length 40 characters",
@@ -78,7 +77,7 @@ app.post('/videos', (req: Request, res: Response) => {
         )
     }
 
-    if (!authorVideo) {
+    if (!authorVideo || authorVideo === null) {
         errors.push(
             {
                 "message": "Author is required",
@@ -87,7 +86,7 @@ app.post('/videos', (req: Request, res: Response) => {
         )
     }
 
-    if (authorVideo.length > 20) {
+    if (authorVideo != null && authorVideo.length > 20) {
         errors.push(
             {
                 "message": "Author should is maximum length 20 characters",
@@ -96,8 +95,9 @@ app.post('/videos', (req: Request, res: Response) => {
         )
     }
 
-    // availableResolutions instanceof  Array
-    if(!Array.isArray(availableResolutions)) {
+    // availableResolutions instanceof Array
+    console.log(availableResolutions instanceof Array)
+    if (!Array.isArray(availableResolutions)) {
         errors.push(
             {
                 "message": "Available Resolutions not valid ",
@@ -106,7 +106,7 @@ app.post('/videos', (req: Request, res: Response) => {
         )
     }
 
-    if(availableResolutions.length > 8) {
+    if (availableResolutions.length > 8) {
         errors.push(
             {
                 "message": "Available Resolutions should is maximum length 8 ",
@@ -115,14 +115,14 @@ app.post('/videos', (req: Request, res: Response) => {
         )
     }
 
-    let availableResolutionExamination: Array<string>  = [];
+    let availableResolutionExamination: Array<string> = [];
 
     availableResolutions.map((av: string) => {
         resolutionValid.map(rv => {
-           if (rv === av) {
-               console.log(av)
-               availableResolutionExamination.push(av)
-           }
+            if (rv === av) {
+                console.log(av)
+                availableResolutionExamination.push(av)
+            }
         })
     })
 
@@ -231,8 +231,8 @@ app.put('/videos/:videoId', (req, res) => {
     const findVideo = videosData.find(v => v.id === id);
 
     if (!findVideo) {
-            res.sendStatus(404);
-            return;
+        res.sendStatus(404);
+        return;
     } else {
         findVideo.title = titleVideo;
         findVideo.author = authorVideo;
