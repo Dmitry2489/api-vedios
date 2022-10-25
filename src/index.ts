@@ -90,7 +90,7 @@ app.post('/videos', (req: Request, res: Response) => {
         errors.push(
             {
                 "message": "Author should is maximum length 20 characters",
-                "field": "Author "
+                "field": "author "
             }
         )
     }
@@ -245,7 +245,7 @@ app.put('/videos/:videoId', (req, res) => {
     availableResolutionsVideo.map((av: string) => {
         resolutionValid.map(rv => {
             if (rv === av) {
-                console.log(av)
+
                 availableResolutionExamination.push(av)
             }
         })
