@@ -96,7 +96,6 @@ app.post('/videos', (req: Request, res: Response) => {
     }
 
     // availableResolutions instanceof Array
-    console.log(availableResolutions instanceof Array)
     if (!Array.isArray(availableResolutions)) {
         errors.push(
             {
@@ -120,11 +119,20 @@ app.post('/videos', (req: Request, res: Response) => {
     availableResolutions.map((av: string) => {
         resolutionValid.map(rv => {
             if (rv === av) {
-                console.log(av)
                 availableResolutionExamination.push(av)
             }
         })
     })
+
+    if (availableResolutionExamination.length != availableResolutions.lenght) {
+        errors.push(
+            {
+                message: "Available Resolutions not valid ",
+                field: "availableResolutions"
+            }
+        )
+    }
+
 
     if (errors.length >= 1) {
         res.status(400).json(
