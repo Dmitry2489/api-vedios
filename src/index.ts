@@ -208,7 +208,7 @@ app.put('/videos/:videoId', (req, res) => {
         )
     }
 
-    if (!authorVideo || titleVideo === null) {
+    if (!authorVideo || authorVideo === null) {
         errors.push(
             {
                 message: "Author is required",
@@ -281,7 +281,6 @@ app.put('/videos/:videoId', (req, res) => {
         )
         return;
     }
-
 
     const findVideo = videosData.find(v => v.id === id);
 
