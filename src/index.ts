@@ -233,8 +233,8 @@ app.put('/videos/:videoId', (req, res) => {
     if (!minAgeRestrictionVideoRes) {
         errors.push(
             {
-                message: "AgeRestrictionVideo should is minimum 1 and maximum 18",
-                field: "AgeRestrictionVideo"
+                message: "minAgeRestriction should is minimum 1 and maximum 18",
+                field: "minAgeRestriction"
             }
         )
     }
