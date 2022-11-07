@@ -17,7 +17,7 @@ interface VideosDataType {
     canBeDownloaded: boolean,
     minAgeRestriction: number | null | boolean;
     createdAt: string;
-    publicationDate: string;
+    publicationDate: string | null ;
     availableResolutions: Array<string>;
 }
 
@@ -184,7 +184,7 @@ app.put('/videos/:videoId', (req, res) => {
     const canBeDownloadedVideo = req.body.canBeDownloaded;
     const minAgeRestrictionVideo = +req.body.minAgeRestriction;
     let minAgeRestrictionVideoRes = false;
-    const publicationDateVideo = req.body.publicationDate != null ? req.body.publicationDate.trim() : null
+    const publicationDateVideo = req.body.publicationDate != null  ? String(req.body.publicationDate).trim() : null
     const publicationDateVideoValid = publicationDateVideo?.match('\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d\\.\\d+([+-][0-2]\\d:[0-5]\\d|Z)');
     let errors: Array<errorsType> = []
     // const dateNow = new Date()
@@ -268,7 +268,7 @@ app.put('/videos/:videoId', (req, res) => {
 
     // console.log(!/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/.test(publicationDateVideo))
 
-    if (publicationDateVideoValid === null || publicationDateVideoValid.length < 1) {
+    if (publicationDateVideoValid === null) {
         errors.push(
             {
                 "message": "publicationDate should /\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{3}Z/",
