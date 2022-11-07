@@ -256,7 +256,6 @@ app.put('/videos/:videoId', (req, res) => {
     availableResolutionsVideo.map((av: string) => {
         resolutionValid.map(rv => {
             if (rv === av) {
-
                 availableResolutionExamination.push(av)
             }
         })
@@ -335,6 +334,7 @@ app.put('/videos/:videoId', (req, res) => {
         findVideo.canBeDownloaded = canBeDownloadedVideo;
         findVideo.minAgeRestriction = minAgeRestrictionVideo;
         findVideo.publicationDate = publicationDateVideo;
+        findVideo.availableResolutions = availableResolutionExamination
 
         res.status(204).send(findVideo);
         return;
