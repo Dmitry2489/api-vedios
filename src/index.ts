@@ -264,7 +264,7 @@ app.put('/videos/:videoId', (req, res) => {
 
     const isBoolean = (val: any) => {
         return val === false || val === true;
-    }
+    };
 
     // console.log(!/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/.test(publicationDateVideo))
 
@@ -277,14 +277,14 @@ app.put('/videos/:videoId', (req, res) => {
         )
     }
 
-    if (errors.length >= 1) {
-        res.status(400).json(
-            {
-                "errorsMessages": errors
-            }
-        )
-        return;
-    }
+    // if (errors.length >= 1) {
+    //     res.status(400).json(
+    //         {
+    //             "errorsMessages": errors
+    //         }
+    //     )
+    //     return;
+    // }
 
     if (!publicationDateVideo) {
         errors.push(
@@ -303,7 +303,6 @@ app.put('/videos/:videoId', (req, res) => {
             }
         )
     }
-
 
     if (!isBoolean(canBeDownloadedVideo)) {
         errors.push(
