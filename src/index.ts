@@ -186,8 +186,6 @@ app.put('/videos/:videoId', (req, res) => {
     let minAgeRestrictionVideoRes = false;
     const publicationDateVideo = req.body.publicationDate != null ? req.body.publicationDate.trim() : null
     const publicationDateVideoValid = publicationDateVideo?.match('\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d\\.\\d+([+-][0-2]\\d:[0-5]\\d|Z)');
-    console.log(publicationDateVideo)
-    console.log(publicationDateVideoValid)
     let errors: Array<errorsType> = []
     // const dateNow = new Date()
 
@@ -268,6 +266,16 @@ app.put('/videos/:videoId', (req, res) => {
         return val === false || val === true;
     }
 
+    // console.log(!/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/.test(publicationDateVideo))
+
+    if (publicationDateVideoValid.length < 1) {
+        errors.push(
+            {
+                "message": "publicationDate should /\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{3}Z/",
+                "field": "publicationDate"
+            }
+        )
+    }
 
     if (errors.length >= 1) {
         res.status(400).json(
