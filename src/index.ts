@@ -268,7 +268,7 @@ app.put('/videos/:videoId', (req, res) => {
 
     // console.log(!/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/.test(publicationDateVideo))
 
-    if (publicationDateVideoValid.length < 1) {
+    if (publicationDateVideoValid === null || publicationDateVideoValid.length < 1) {
         errors.push(
             {
                 "message": "publicationDate should /\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{3}Z/",
