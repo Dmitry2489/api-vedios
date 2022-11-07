@@ -1,7 +1,7 @@
 import express, {Request, Response} from 'express'
 // import bodyParser from "body-parser";
 
-import {addDays} from 'date-fns'
+import {addDays, isValid} from 'date-fns'
 
 const app = express()
 const port = process.env.PORT || 5000
@@ -184,11 +184,16 @@ app.put('/videos/:videoId', (req, res) => {
     const canBeDownloadedVideo = req.body.canBeDownloaded;
     const minAgeRestrictionVideo = +req.body.minAgeRestriction;
     let minAgeRestrictionVideoRes = false;
-    const publicationDateVideo = req.body.publicationDate;
+    const publicationDateVideo = req.body.publicationDate != null ? req.body.publicationDate.trim() : null
+    const publicationDateVideoValid = publicationDateVideo?.match('\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d\\.\\d+([+-][0-2]\\d:[0-5]\\d|Z)');
+    console.log(publicationDateVideo)
+    console.log(publicationDateVideoValid)
     let errors: Array<errorsType> = []
-    const dateNow = new Date()
+    // const dateNow = new Date()
 
-    const datePlusDay = addDays(dateNow, 1)
+    console.log(isValid(publicationDateVideo))
+
+    // const datePlusDay = addDays(dateNow, 1)
 
     if (!titleVideo || titleVideo === null) {
         errors.push(
@@ -220,7 +225,7 @@ app.put('/videos/:videoId', (req, res) => {
     if (authorVideo != null && authorVideo.length > 20) {
         errors.push(
             {
-                message: "Author should is maximum length 40 characters",
+                message: "Author should is maximum length 20 characters",
                 field: "author"
             }
         )
@@ -263,6 +268,35 @@ app.put('/videos/:videoId', (req, res) => {
         return val === false || val === true;
     }
 
+
+    if (errors.length >= 1) {
+        res.status(400).json(
+            {
+                "errorsMessages": errors
+            }
+        )
+        return;
+    }
+
+    if (!publicationDateVideo) {
+        errors.push(
+            {
+                "message": "publicationDateVideo is required",
+                "field": "publicationDateVideo"
+            }
+        )
+    }
+
+    if (publicationDateVideoValid != null && publicationDateVideoValid.length < 1) {
+        errors.push(
+            {
+                "message": "publicationDateVideo should 2022-10-26T06:15:07.132Z",
+                "field": "publicationDateVideo"
+            }
+        )
+    }
+
+
     if (!isBoolean(canBeDownloadedVideo)) {
         errors.push(
             {
@@ -293,7 +327,7 @@ app.put('/videos/:videoId', (req, res) => {
         findVideo.minAgeRestriction = minAgeRestrictionVideoRes;
         findVideo.canBeDownloaded = canBeDownloadedVideo;
         findVideo.minAgeRestriction = minAgeRestrictionVideo;
-        findVideo.publicationDate = datePlusDay.toISOString();
+        findVideo.publicationDate = publicationDateVideo;
 
         res.status(204).send(findVideo);
         return;
